@@ -10,8 +10,10 @@ const styles = theme => (
         card: {
             display: 'flex',
             flexDirection: 'column',
+            marginRight: 'auto',
             marginTop: 25,
             marginBottom: 25,
+            marginLeft: 'auto',
             minWidth: '25%',
             maxWidth: '50%',
             backgroundColor: theme.palette.secondary.light,
@@ -25,6 +27,9 @@ const styles = theme => (
         text: {
             fontSize: 14,
             textIndent: 15,
+        },
+        timelabel: {
+            fontSize: 12,
         },
 
         title: {
@@ -49,15 +54,14 @@ class Comment extends Component{
         const classes = this.props.classes;
       return(
           <Card className={classes.card} >
-              {/*<Typography className={classes.author} variant='subtitle1' color='textPrimary' align='right'*/}
-              {/*> {this.props.author} </Typography>*/}
               <div>
+                  <Typography className={classes.timelabel} style={{float: 'left'}} variant='subtitle1'>{this.props.timelabel} </Typography>
                   <Chip label={this.props.author} className={classes.chip} variant="outlined" />
               </div>
 
               <Typography className={classes.title}
                           color='textPrimary'
-                          variant='h6'
+                          variant='title'
               align='center'>{this.props.title}</Typography>
               <Divider variant='middle'></Divider>
               <Typography className={classes.text} color='textPrimary'  component='h1' variant='body1'>{this.props.content}</Typography>

@@ -1,4 +1,5 @@
 import React from 'react';
+import '../config'
 import './NavBar.css'
 import {Link} from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar';
@@ -9,12 +10,15 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
+import {NAVBAR_TITLE} from "../config";
 
 
 class NavBar extends React.Component{
     state = {
         anchorEl: null,
+        refreshIntervalID: null,
     };
+
 
     handleClick = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -23,6 +27,17 @@ class NavBar extends React.Component{
     handleClose = () => {
         this.setState({ anchorEl: null });
     };
+
+    logoutUser = () => {
+        this.props.removeUserAuth()
+    };
+
+    setUserRefreshToken = () => {
+        let timerID = setInterval(() => {this.props.refreshAuth(this.props.refreshToken)
+        console.log(this.props.refreshToken)},(this.props.expiresIn - 10)*1000);
+        console.log(`${timerID} es el id del timer`)
+        this.props.setRefreshTimerID(timerID)
+    }
 
     render(){
         return (
@@ -46,22 +61,24 @@ class NavBar extends React.Component{
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                             onClose={this.handleClose}
                         >
-                            <MenuItem
-                            component={Link} to="/about"
-                            onClick={this.handleClose}>About</MenuItem>
-                            <MenuItem
-                                component={Link} to="/topics"
+                            {!this.props.isAuthed ? <MenuItem
+                                component={Link} to="/register"
+                                onClick={this.handleClose}>Register</MenuItem> : null}
+                            {this.props.isAuthed ? <MenuItem
+                                component={Link} to="/profile"
                                 onClick={this.handleClose}
-                            >Profile
-                            </MenuItem>
-                                <MenuItem
-                                    onClick={this.handleClose}>Logout
-                                </MenuItem>
+                            >Profile</MenuItem> : null}
                         </Menu>
-                        <Typography variant="h6" color="inherit" className='grow'>
-                            News
+                        <Typography variant="h6" color="inherit" className='grow' align={'center'} component={Link} to={'/'} style={{textDecoration: 'none',outline: 0}}>
+                            {NAVBAR_TITLE}
                         </Typography>
-                        <Button color="inherit">Login</Button>
+                        {!this.props.isAuthed ?
+                            <Link to={{pathname : '/login', callbacklogin: () =>{ this.setUserRefreshToken()}}} >
+                                <Button color="secondary" variant={'contained'}>Login</Button>
+                            </Link>
+                             :
+
+                            <Button color="inherit" onClick={this.logoutUser}>Logout</Button>}
                     </Toolbar>
                 </AppBar>
             </div>

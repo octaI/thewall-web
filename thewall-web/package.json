@@ -1,6 +1,7 @@
 {
   "name": "thewall-web",
   "version": "0.1.0",
+  "proxy": "http://localhost:8000/",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",

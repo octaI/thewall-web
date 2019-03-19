@@ -1,1 +1,3 @@
-export const ROOT_URL= 'http://0.0.0.0:8000';
+export const ROOT_URL= '';
+
+export const NAVBAR_TITLE = 'The Wall'

@@ -1,12 +1,15 @@
 import {connect} from 'react-redux'
-import {getComments,getCommentsFailure,getCommentsSuccess} from "../actions/comments";
+import {getComments, getCommentsFailure, getCommentsSuccess, showSubmitCommentDialog, hideSubmitDialog} from "../actions/comments";
 import CommentList from '../Components/CommentList';
 
 const mapStateToProps = (state) => {
     return {
         commentData: state.CommentListState.commentData,
+        commentList: state.CommentListState.commentData.commentList,
         addComment: state.CommentListState.newComment,
-        teststore: state.CommentListState.teststore,
+        isAuthed: state.UserState.isAuthed,
+        error: state.CommentListState.error,
+        showSubmitDialog: state.CommentListState.showSubmitDialog,
     };
 };
 
@@ -20,10 +23,18 @@ const mapDispatchToProps = (dispatch) => {
 
             ).catch( (error) =>{
 
-                dispatch(getCommentsFailure(error.message));
+                dispatch(getCommentsFailure(error));
                 }
 
             )
+        },
+
+        showSubmitCommentDialog: () => {
+            dispatch(showSubmitCommentDialog())
+        },
+
+        hideSubmitCommentDialog: () => {
+            dispatch(hideSubmitDialog())
         }
     }
 };
