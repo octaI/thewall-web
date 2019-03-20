@@ -33,6 +33,8 @@ export function registerUser(newUserInfo){
             username: newUserInfo.username,
             password: newUserInfo.password,
             email: newUserInfo.email,
+            first_name: newUserInfo.firstName,
+            last_name: newUserInfo.lastName,
         }
     })
     return {

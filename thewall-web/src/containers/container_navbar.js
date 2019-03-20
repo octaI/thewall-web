@@ -1,5 +1,4 @@
 import {connect} from 'react-redux'
-import {} from "../actions/user";
 import NavBar  from '../Components/NavBar';
 import {removeUserAuth} from "../actions/user";
 import {refreshAuth} from "../actions/user";

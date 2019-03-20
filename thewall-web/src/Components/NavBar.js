@@ -3,6 +3,7 @@ import '../config'
 import './NavBar.css'
 import {Link} from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar';
+import FaceIcon from '@material-ui/icons/Face'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -11,7 +12,29 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
 import {NAVBAR_TITLE} from "../config";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Chip from "@material-ui/core/Chip/Chip";
 
+const styles = theme => ({
+    userChip: {
+        marginRight: '1%',
+        marginLeft: '0%',
+    },
+
+    appBarTitle: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'left'
+    },
+
+    button: {
+        backgroundColor: '#d2d71e',
+        '&:hover': {
+            backgroundColor: '#c69f24',
+            borderColor: '#c2cc4e',
+        },
+    }
+});
 
 class NavBar extends React.Component{
     state = {
@@ -35,11 +58,11 @@ class NavBar extends React.Component{
     setUserRefreshToken = () => {
         let timerID = setInterval(() => {this.props.refreshAuth(this.props.refreshToken)
         console.log(this.props.refreshToken)},(this.props.expiresIn - 10)*1000);
-        console.log(`${timerID} es el id del timer`)
         this.props.setRefreshTimerID(timerID)
     }
 
     render(){
+        const {classes} = this.props;
         return (
             <div className='root'>
                 <AppBar position="static">
@@ -64,21 +87,18 @@ class NavBar extends React.Component{
                             {!this.props.isAuthed ? <MenuItem
                                 component={Link} to="/register"
                                 onClick={this.handleClose}>Register</MenuItem> : null}
-                            {this.props.isAuthed ? <MenuItem
-                                component={Link} to="/profile"
-                                onClick={this.handleClose}
-                            >Profile</MenuItem> : null}
+
                         </Menu>
-                        <Typography variant="h6" color="inherit" className='grow' align={'center'} component={Link} to={'/'} style={{textDecoration: 'none',outline: 0}}>
+                        <Typography variant="h6" color="inherit"  className={classes.appBarTitle} component={Link} to={'/'} style={{textDecoration: 'none',outline: 0}}>
                             {NAVBAR_TITLE}
                         </Typography>
+
+                        {this.props.isAuthed ? <Chip className={classes.userChip} icon={<FaceIcon/>} label={this.props.username}/> : null}
                         {!this.props.isAuthed ?
                             <Link to={{pathname : '/login', callbacklogin: () =>{ this.setUserRefreshToken()}}} >
-                                <Button color="secondary" variant={'contained'}>Login</Button>
+                                <Button className={classes.button} variant={"outlined"}>Login</Button>
                             </Link>
-                             :
-
-                            <Button color="inherit" onClick={this.logoutUser}>Logout</Button>}
+                             : <Button className={classes.button} variant={"outlined"} onClick={this.logoutUser}>Logout</Button>}
                     </Toolbar>
                 </AppBar>
             </div>
@@ -87,4 +107,4 @@ class NavBar extends React.Component{
 }
 
 
-export default NavBar;
+export default withStyles(styles)(NavBar);

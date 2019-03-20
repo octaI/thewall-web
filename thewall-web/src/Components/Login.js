@@ -62,6 +62,13 @@ class Login extends Component{
         });
     };
 
+    handleKeyPress = (event)  => {
+        if (event.key === 'Enter'){
+            this.handleClick();
+            event.preventDefault();
+        }
+    }
+
     render() {
         const {classes} = this.props;
         return(
@@ -75,8 +82,8 @@ class Login extends Component{
                                label={'Username'}>Username </TextField>
 
                     <TextField label={'Password'} type={'password'} className={classes.textfield}
-                               value={this.state.password} onChange={this.handleChange('password')}/>
-                    <Button variant={"contained"} color={"primary"} className={classes.button} onClick={this.handleClick}>Submit</Button>
+                               value={this.state.password} onChange={this.handleChange('password')} onKeyPress={ this.handleKeyPress}/>
+                    <Button disabled={this.state.username==="" || this.state.password ===""} variant={"contained"} color={"primary"} className={classes.button} onClick={this.handleClick}>Submit</Button>
                 </form>
             </div>
 

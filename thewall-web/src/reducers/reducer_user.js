@@ -1,4 +1,7 @@
 import {
+    REGISTER_USER_FAILURE,
+    REGISTER_USER_SUCCESS,
+    REGISTER_USER,
     AUTH_USER,
     AUTH_USER_FAILURE,
     AUTH_USER_SUCCESS,
@@ -27,12 +30,22 @@ export default (state = INITIAL_STATE,action) => {
 
         case AUTH_USER_SUCCESS:
             return {...state,error: null, loading: false, authToken: action.payload['access_token'],refreshToken: action.payload['refresh_token'],
-                isAuthed: true, expiresIn: action.payload['expires_in'], userData: {userId: action.payload['user_data']['id']}
+                isAuthed: true, expiresIn: action.payload['expires_in'],
+                userData: {userId: action.payload['user_data']['id'], userName: action.payload['user_data']['username'], email: action.payload['user_data']['email']}
 
             };
 
         case AUTH_USER_FAILURE:
             return {...state, loading: false, authToken: null, refreshToken: null, isAuthed: false, error: action.payload};
+
+        case REGISTER_USER:
+            return {...state, loading: true, error: null, isAuthed: false};
+
+        case REGISTER_USER_SUCCESS:
+            return {...state,loading:false,error:null};
+
+        case REGISTER_USER_FAILURE:
+            return {...state, loading: false, error: action.payload};
 
         case GET_USER_INFO:
             return{...state,loading: true,error: null};
